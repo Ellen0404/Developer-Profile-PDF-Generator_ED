@@ -1,0 +1,22 @@
+{
+  "name": "developer-profile-generator_ed",
+  "version": "1.0.0",
+  "description": "creating a developer generation",
+  "main": "index.js",
+  "scripts": {
+    "test": "\"Success!\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ellen0404/Developer-Profile-Generator_ED.git"
+  },
+  "author": "Elena Demidionok",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ellen0404/Developer-Profile-Generator_ED/issues"
+  },
+  "homepage": "https://github.com/Ellen0404/Developer-Profile-Generator_ED#readme",
+  "dependencies": {
+    "inquirer": "^7.0.4"
+  }
+}
