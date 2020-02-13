@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Ellen0404/Developer-Profile-Generator_ED#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "inquirer": "^7.0.4"
   }
 }

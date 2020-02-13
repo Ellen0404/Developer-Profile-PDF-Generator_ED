@@ -1,32 +1,32 @@
 const colors = {
-    green: {
-      wrapperBackground: "#E6E1C3",
-      headerBackground: "#C1C72C",
-      headerColor: "black",
-      photoBorderColor: "#black"
-    },
-    blue: {
-      wrapperBackground: "#5F64D3",
-      headerBackground: "#26175A",
-      headerColor: "white",
-      photoBorderColor: "#73448C"
-    },
-    pink: {
-      wrapperBackground: "#879CDF",
-      headerBackground: "#FF8374",
-      headerColor: "white",
-      photoBorderColor: "#FEE24C"
-    },
-    red: {
-      wrapperBackground: "#DE9967",
-      headerBackground: "#870603",
-      headerColor: "white",
-      photoBorderColor: "white"
-    }
-  };
-  
-  function generateHTML(data) {
-    return `<!DOCTYPE html>
+  green: {
+    wrapperBackground: "#E6E1C3",
+    headerBackground: "#C1C72C",
+    headerColor: "black",
+    photoBorderColor: "#black"
+  },
+  blue: {
+    wrapperBackground: "#5F64D3",
+    headerBackground: "#26175A",
+    headerColor: "white",
+    photoBorderColor: "#73448C"
+  },
+  pink: {
+    wrapperBackground: "#879CDF",
+    headerBackground: "#FF8374",
+    headerColor: "white",
+    photoBorderColor: "#FEE24C"
+  },
+  red: {
+    wrapperBackground: "#DE9967",
+    headerBackground: "#870603",
+    headerColor: "white",
+    photoBorderColor: "white"
+  }
+};
+
+function generateHTML(data) {
+  return `<!DOCTYPE html>
   <html lang="en">
      <head>
         <meta charset="UTF-8" />
@@ -124,6 +124,7 @@ const colors = {
            }
            .nav-link {
            display: inline-block;
+           font-size:20px;
            margin: 5px 10px;
            }
            .workExp-date {
@@ -170,10 +171,73 @@ const colors = {
               zoom: .75; 
             } 
            }
-        </style>`
-          }
+        </style>
+        <body>
+          
+        <main>
+          <div class="wrapper">
+            <div class="row">
+              <div class="col"> 
+              
+                <div class="photo-header">
+                  <img src="${data.avatar_url}"> 
+                  <h1>Hello!</h1> 
+                  <h2>My name is ${data.gitName}</h2>
+                  <span class="links-nav">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <a class="nav-link" href ="https://www.google.com/maps/place/${
+                      data.location
+                    }">location</a>
+                    <i class="fab fa-github-square"></i>
+                    <a class="nav-link" href ="${data.html_url}">GitHub</a>
+                    <i class="fas fa-blog"></i>
+                    <a class="nav-link" href ="${data.blog}">Blog</a>
+                </span>
+                </div>
+              </div> 
+            </div> 
+        
+        <div class="container">
+        <div class="row">
+        <div class="col">
+        <h4>${data.bio}</h4>
+        </div>
+        </div>
+          <div class="row">
+            <div class="col">
+              <div class="card">
+                <h4>Public Repositories</h4>
+                <h4>${data.public_repos}</h4>
+              </div>
+            </div>
+            <div class="col">
+               <div class="card">
+                <h4>Followers</h4>
+                <h4>${data.followers}</h4>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="card">
+                <h4>GitHub Stars</h4>
+                <h4>${data.starCount}</h4>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card">
+                <h4>Following</h4>
+                <h4>${data.following}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </main>
+  
+    </body>
+    </html>`;
+}
 
-    module.exports ={
-        colors: colors,
-        generateHTML: generateHTML
-    }
+module.exports = generateHTML;
