@@ -1,99 +1,93 @@
-// library packages
+// LIBRARIES PACKAGES
+
 const fs = require("fs");
 const inquirer = require("inquirer");
 const axios = require("axios");
-const getRepo = require("./getRepo");
 const generateHTML = require("./generateHTML.js");
 var pdf = require("html-pdf");
+
 var starCount = 0;
 
 async function init() {
-  const responses = await inquirer.prompt([
-    {
-      type: "input",
-      name: "name",
-      message: "What is your GitHub username?"
-    },
-    {
-      type: "list",
-      message: "What is your preferred color for background?",
-      name: "color",
-      choices: ["green", "blue", "pink", "red"]
+  try {
+    // QUESTIONS TO USER
+    const responses = await inquirer.prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is your GitHub username?"
+      },
+      {
+        type: "list",
+        message: "What is your preferred color for background?",
+        name: "color",
+        choices: ["green", "blue", "pink", "red"]
+      }
+    ]);
+
+    const { name, color } = responses;
+    console.log({ name, color });
+
+    // GET GITHUB INFO FROM GITHUB API
+    const repo = await axios.get(`https://api.github.com/users/${name}`);
+    const { data } = repo;
+    const {
+      name: gitName,
+      avatar_url,
+      login,
+      location,
+      html_url,
+      blog,
+      bio,
+      public_repos,
+      followers,
+      following
+    } = data;
+
+    // GET STARS COUNT
+    const getStars = await axios.get(
+      `https://api.github.com/users/${name}/starred`
+    );
+
+    for (i = 0; i < getStars.data.length; i++) {
+      starCount += getStars.data[0].stargazers_count;
     }
-  ]);
+    console.log("stars inside: " + starCount);
 
-  const { name, color } = responses;
-  console.log({ name, color });
+    // CREATE HTML FILE
+    const html = await generateHTML({
+      color,
+      starCount,
+      gitName,
+      avatar_url,
+      login,
+      location,
+      html_url,
+      blog,
+      bio,
+      public_repos,
+      followers,
+      following
+    });
 
-  const repo = await getRepo(name);
-  const { data } = repo;
-  const {
-    name: gitName,
-    avatar_url,
-    login,
-    location,
-    html_url,
-    blog,
-    bio,
-    public_repos,
-    followers,
-    following
-  } = data;
+    fs.writeFileSync(data.login + ".html", html, function(err) {
+      if (err) {
+        throw err;
+      }
+    });
 
+    // CREATE PDF FROM HTML
+    const filename = data.login;
+    var readHtml = fs.readFileSync(filename + ".html", "utf8");
+    var options = { format: "Letter" };
 
-  const getStars = await axios.get(
-    `https://api.github.com/users/${name}/starred`
-  );
-
-  for (i = 0; i < getStars.data.length; i++) {
-    starCount += getStars.data[0].stargazers_count;
+    pdf.create(readHtml, options).toFile(filename + ".pdf", function(err, res) {
+      if (err) return console.log(err);
+      console.log(res);
+    });
+  } catch (err) {
+    console.log(err);
   }
-  console.log("stars inside: " + starCount);
-
-  // console.log("stars outside: " + starCount);
-
-  const html = await generateHTML({
-    color,
-    starCount,
-    gitName,
-    avatar_url,
-    login,
-    location,
-    html_url,
-    blog,
-    bio,
-    public_repos,
-    followers,
-    following
-  });
-
-  fs.writeFileSync(data.login + ".html", html, function(err) {
-    if (err) {
-      throw err;
-    }
-  });
-  const filename = data.login;
-  var readHtml = fs.readFileSync(filename + ".html", "utf8");
-  var options = { format: "Letter" };
-
-  pdf.create(readHtml, options).toFile(filename + ".pdf", function(err, res) {
-    if (err) return console.log(err);
-    console.log(res);
-  });
-
-  // const conversion = await convertFactory({
-  //   converterPath: convertFactory.converters.PDF
-  // });
-  // conversion({ html: html }, function(err, result) {
-  //   if (err) {
-  //     return console.error(err);
-  //   }
-
-  //   console.log(result.numberOfPages);
-  //   console.log(result.logs);
-  //   result.stream.pipe(fs.createWriteStream("profile.pdf"));
-  //   conversion.kill(); // necessary if you use the electron-server strategy, see bellow for details
-  // });
 }
 
 init();
