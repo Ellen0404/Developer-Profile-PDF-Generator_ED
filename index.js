@@ -40,14 +40,17 @@ async function init() {
     following
   } = data;
 
-  axios.get(`https://api.github.com/users/${name}/starred`).then(function(res) {
-    for (i = 0; i < res.data.length; i++) {
-      starCount += res.data[0].stargazers_count;
-    }
 
-    return starCount;
-    // console.log("stars: " + starCount);
-  });
+  const getStars = await axios.get(
+    `https://api.github.com/users/${name}/starred`
+  );
+
+  for (i = 0; i < getStars.data.length; i++) {
+    starCount += getStars.data[0].stargazers_count;
+  }
+  console.log("stars inside: " + starCount);
+
+  // console.log("stars outside: " + starCount);
 
   const html = await generateHTML({
     color,
