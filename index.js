@@ -70,18 +70,12 @@ async function init() {
       following
     });
 
-    fs.writeFileSync(data.login + ".html", html, function(err) {
-      if (err) {
-        throw err;
-      }
-    });
-
     // CREATE PDF FROM HTML
     const filename = data.login;
-    var readHtml = fs.readFileSync(filename + ".html", "utf8");
+
     var options = { format: "Letter" };
 
-    pdf.create(readHtml, options).toFile(filename + ".pdf", function(err, res) {
+    pdf.create(html, options).toFile(filename + ".pdf", function(err, res) {
       if (err) return console.log(err);
       console.log(res);
     });
