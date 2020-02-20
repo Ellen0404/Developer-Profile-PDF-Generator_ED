@@ -10,10 +10,11 @@ $ node index.js
   - [Features](#Features)
   - [Example of generated PDF file](#Example-of-generated-PDF-file )
   - [Bugs](#Bugs)
+  
 
 > ## Features
 >
-> - User can choose his favorite color from a list for generated PDF
+> - User can choose  favorite color from a list for generated PDF
 > -  The PDF will have a link to user's **GitHub page**, his **location** and link to **user's blog or website**
 
 ## Example of generated PDF file 
